@@ -47,7 +47,6 @@ public class MainScreenActivity extends ActionBarActivity {
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		if (getStreamImage == null)
 			getStreamImage = new GetStreamImage(this);	
-		//hideSystemUI();
 		buttonControl();
 	}
 
@@ -65,30 +64,6 @@ public class MainScreenActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	/*
-	 * Hide title bar of android.
-	 */
-	private void hideSystemUI() {
-		getWindow().getDecorView().setSystemUiVisibility(
-				View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-						| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-						| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-						| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-						| View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-						| View.SYSTEM_UI_FLAG_IMMERSIVE);
-	}
-
-	/*
-	 * Show title bar of android.
-	 */
-	private void showSystemUI() {
-		getWindow().getDecorView().setSystemUiVisibility(
-				View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-						| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-						| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-	}
-
 	/*
 	 * Take a screenshot to device memory path.
 	 * 
@@ -143,12 +118,12 @@ public class MainScreenActivity extends ActionBarActivity {
 		panelSwitch.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (panelSwitch.isChecked()) {
-//					connectButton.setVisibility(View.VISIBLE);
-//					disconnectButton.setVisibility(View.VISIBLE);
+					connectButton.setVisibility(View.VISIBLE);
+					disconnectButton.setVisibility(View.VISIBLE);
 //					ipAddressText.setVisibility(View.VISIBLE);
 				} else {
-//					connectButton.setVisibility(View.INVISIBLE);
-//					disconnectButton.setVisibility(View.INVISIBLE);
+					connectButton.setVisibility(View.INVISIBLE);
+					disconnectButton.setVisibility(View.INVISIBLE);
 //					ipAddressText.setVisibility(View.INVISIBLE);
 				}
 			}
