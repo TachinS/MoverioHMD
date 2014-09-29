@@ -6,13 +6,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -35,12 +38,15 @@ public class MainScreenActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.hide();
 		setContentView(R.layout.activity_main_screen);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		if (getStreamImage == null)
-			getStreamImage = new GetStreamImage(this);
+			getStreamImage = new GetStreamImage(this);	
 		//hideSystemUI();
 		buttonControl();
 	}
@@ -149,6 +155,7 @@ public class MainScreenActivity extends ActionBarActivity {
 		});
 
 	}
+	
 
 	public void ipAddressUpdate() {
 		ipAddressText = (TextView) findViewById(R.id.ipAddressText);
