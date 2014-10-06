@@ -6,10 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import th.in.blackouts.facedetection.DoFaceDetection;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,23 +20,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import android.widget.ViewFlipper;
 
 /*
  * @author Tachin Srisombat <jidrids@gmail.com>
  * @version 0.1
  * @since 9-26-2014
  */
+@SuppressLint("WrongCall")
 public class MainScreenActivity extends ActionBarActivity {
-	private WebView webView;
 	private Button connectButton;
 	private Button disconnectButton;
 	private ToggleButton panelSwitch;
 	private TextView ipAddressText;
 	private GetStreamImage getStreamImage;
+	private DoFaceDetection doFaceDetection;
+	private ViewFlipper fp;
+	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +51,12 @@ public class MainScreenActivity extends ActionBarActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		this.context = this;
 		if (getStreamImage == null)
 			getStreamImage = new GetStreamImage(this);	
+		if (doFaceDetection == null)
+			doFaceDetection = new DoFaceDetection(this);
+		fp = (ViewFlipper) findViewById(R.id.viewFlipper1);
 		buttonControl();
 	}
 
@@ -98,17 +108,17 @@ public class MainScreenActivity extends ActionBarActivity {
 		connectButton = (Button) findViewById(R.id.connectButton);
 		connectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				webView = (WebView) findViewById(R.id.mainImageStream);
 				getStreamImage.setURL("http://192.168.111.1:8888/tincam.jpg");
-				getStreamImage.getImage(webView);
+				getStreamImage.getImage(fp);
 				ipAddressUpdate();
+//				imageView = doFaceDetection.process();
+//				fp.addView(imageView);
+
 			}
 		});
 		disconnectButton = (Button) findViewById(R.id.disconnectButton);
 		disconnectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				webView = (WebView) findViewById(R.id.mainImageStream);
-				webView.clearView();
 				getStreamImage.setURL("IP ADDRESS");
 				ipAddressUpdate();
 			}
@@ -120,18 +130,17 @@ public class MainScreenActivity extends ActionBarActivity {
 				if (panelSwitch.isChecked()) {
 					connectButton.setVisibility(View.VISIBLE);
 					disconnectButton.setVisibility(View.VISIBLE);
-//					ipAddressText.setVisibility(View.VISIBLE);
+					ipAddressText.setText(getStreamImage.getURL());
 				} else {
 					connectButton.setVisibility(View.INVISIBLE);
 					disconnectButton.setVisibility(View.INVISIBLE);
-//					ipAddressText.setVisibility(View.INVISIBLE);
+					ipAddressText.setText("");
 				}
 			}
 		});
 
 	}
 	
-
 	public void ipAddressUpdate() {
 		ipAddressText = (TextView) findViewById(R.id.ipAddressText);
 		ipAddressText.setText(getStreamImage.getURL());

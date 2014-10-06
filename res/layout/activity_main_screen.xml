@@ -5,13 +5,6 @@
     tools:context="th.in.blackouts.moveriohmd.MainScreenActivity"
     tools:ignore="MergeRootFrame" >
 
-    <WebView
-        android:id="@+id/mainImageStream"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
-
     <Button
         android:id="@+id/connectButton"
         android:layout_width="wrap_content"
@@ -45,5 +38,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="IP ADDRESS" />
+
+    <ViewFlipper
+        android:id="@+id/viewFlipper1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+    </ViewFlipper>
 
 </RelativeLayout>

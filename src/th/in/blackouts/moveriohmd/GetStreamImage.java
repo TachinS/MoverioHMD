@@ -3,11 +3,11 @@ package th.in.blackouts.moveriohmd;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import th.in.blackouts.facedetection.DoFaceDetection;
+
 import android.app.Activity;
 import android.content.Context;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.ViewFlipper;
 
 /*
  * Class for get Stream image from web camera.
@@ -20,23 +20,17 @@ public class GetStreamImage extends Activity {
 	private Context context;
 	private Timer autoUpdate;
 	private String url;
-	private WebView webView;
+	private DoFaceDetection doFaceDetection;
+	private ViewFlipper viewFlipper;
 
 	public GetStreamImage(Context context) {
 		this.context = context;
+		doFaceDetection = new DoFaceDetection(this.context);
 	}
 
-	public void getImage(WebView webView) {
-		this.webView = webView;
-		webView.setWebViewClient(new WebViewClient() {
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				view.loadUrl(url);
-				return true;
-			}
-		});
-		webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-		webView.getSettings().setLoadWithOverviewMode(true);
-		webView.getSettings().setUseWideViewPort(true);
+	public void getImage(ViewFlipper fp) {
+		this.viewFlipper = fp;
+		viewFlipper.addView(doFaceDetection.process());
 		timerSetup();
 	}
 
@@ -48,11 +42,13 @@ public class GetStreamImage extends Activity {
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						webView.loadUrl(url);
+						if(viewFlipper != null)
+							viewFlipper.removeAllViews();
+						viewFlipper.addView(doFaceDetection.process());
 					}
 				});
 			}
-		}, 0, 500);// refresh rate time interval (ms)
+		}, 0, 2000);// refresh rate time interval (ms)
 
 	}
 
